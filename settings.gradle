@@ -1,0 +1,4 @@
+rootProject.name = 'bloxql'
+include 'bloxql-app'
+include 'bloxql-lib'
+

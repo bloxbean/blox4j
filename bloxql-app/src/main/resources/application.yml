@@ -1,0 +1,26 @@
+rpc:
+  endpoint: "tcp://localhost:8547"
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+    subscriptions:
+      websocket:
+        path: /subscriptions
+  enable: true
+
+rest:
+  enable: true
+
+aion:
+  graphql:
+    disable-sensitive-operations: false
+    txn:
+      max-blocks-to-scan: 2000
+
+spring.jackson.serialization.indent-output: true
+
+#Actuator settings
+management.endpoints.web.exposure.include: health,metrics, info

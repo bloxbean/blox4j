@@ -1,0 +1,71 @@
+#{"query": "{ txnApi {transactions(first: 3) {to from}} }"}
+txnApi:
+  transactions: "
+                txnApi {
+                  transactions(first: 3) {
+                    to
+                    from
+                    value
+                    timestamp
+                  }
+                }"
+
+
+  transaction: "
+                txnApi {
+                                    transaction(txHash: \"f5aef96668cdb2bc0171edae363c191d50addfa2ab7e88c430bb15c624d8fc1e\") {
+                                       to
+                                       from
+                                       value
+                                       blockHash
+                                       blockNumber
+                                       data
+                                       nonce
+                                    }
+                                }"
+
+  nrgPrice: "
+             txnApi {
+                   nrgPrice
+             }
+             "
+
+  solcVersion: "
+             txnApi {
+                 solcVersion
+               }
+            "
+
+blocks:
+  query: "
+                 blockApi {
+                     blocks(first: 5, before: 1496491) {
+                       number
+                       hash
+                       parentHash
+                       nrgConsumed
+                       nrgLimit
+                       txDetails {
+                         to
+                         from
+                         value
+                         timestamp
+                       }
+                     }
+                 }
+           "
+
+rpc:
+  endpoint: "tcp://localhost:8547"
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+    subscriptions:
+      websocket:
+        path: /subscriptions
+
+txn:
+  max-blocks-to-scan: 2000

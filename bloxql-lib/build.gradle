@@ -1,0 +1,30 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    //graphql
+    compile group: 'com.graphql-java', name: 'graphql-java-tools', version:'5.2.4'
+    compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version:'5.0.2'
+    compile group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version:'5.0.2'
+
+    //Needed for Abi
+    compile group: 'org.json', name: 'json', version: '20180813'
+
+    compile group: 'org.apache.commons', name: 'commons-pool2', version:'2.2'
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
+    compile "io.reactivex.rxjava2:rxjava:2.1.5"
+
+    compile fileTree(include: ['*.jar'], dir: '../lib')
+
+}
+
+jar {
+    enabled = true
+}
+
+[bootJar]*.enabled = false
