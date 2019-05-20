@@ -10,10 +10,10 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
-
-plugins {
-    id 'net.researchgate.release' version '2.6.0'
-}
+//
+//plugins {
+//    id 'net.researchgate.release' version '2.6.0'
+//}
 
 apply plugin: "maven"
 apply plugin: 'signing'
@@ -47,59 +47,80 @@ subprojects {
         testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
     }
 
-    /*
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    
+}
 
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
+// Create a jar with javadoc
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
 
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
-                }
+// Create a jar with soruces
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
-                pom.project {
+// hook all the artifacts under artifacts task
+artifacts {
+    archives javadocJar, sourcesJar
+}
 
-                    //name 'bloxql'
-                    packaging 'jar'
-                    // optionally artifactId can be defined here
-                    description 'An Api Layer For Aion Blockchain'
+// Signing task
+signing {
+    sign configurations.archives
+}
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+uploadArchives {
+
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+
+                //name 'bloxql'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'An Api Layer For Aion Blockchain'
+                url 'https://github.com/bloxbean/bloxql'
+
+                scm {
+                    connection 'scm:git:git@github.com:bloxbean/bloxql.git'
+                    developerConnection 'scm:git:git@github.com:bloxbean/bloxql.git'
                     url 'https://github.com/bloxbean/bloxql'
+                }
 
-                    scm {
-                        connection 'scm:git:git@github.com:bloxbean/bloxql.git'
-                        developerConnection 'scm:git:git@github.com:bloxbean/bloxql.git'
-                        url 'https://github.com/bloxbean/bloxql'
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
                     }
+                }
 
-                    licenses {
-                        license {
-                            name 'MIT License'
-                            url 'http://www.opensource.org/licenses/mit-license.php'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'satran004'
-                            name 'Satya'
-                            email 'satran004@gmail.com'
-                        }
+                developers {
+                    developer {
+                        id 'satran004'
+                        name 'Satya'
+                        email 'satran004@gmail.com'
                     }
                 }
             }
         }
-    }*/
+    }
 }
 
-//task javadocJar(type: Jar) {
-//    classifier = 'javadoc'
-//    from javadoc
-//}
-//
 //task sourcesJar(type: Jar) {
 //    classifier = 'sources'
 //    from sourceSets.main.allSource
