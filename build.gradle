@@ -11,37 +11,17 @@ buildscript {
     }
 }
 
-//plugins {
-//    id 'net.researchgate.release' version '2.6.0'
-//}
+plugins {
+    id 'net.researchgate.release' version '2.6.0'
+}
 
 apply plugin: "maven"
+apply plugin: 'signing'
 apply plugin: 'groovy'
-
-//apply plugin: 'application'
-
-//group = 'com.bloxbean'
-//version = '0.1-SNAPSHOT'
-
-//description = "bloxql - A QL for blockchain"
-//
-//sourceCompatibility = 1.9
-//
-//tasks.withType(JavaCompile) {
-//    options.encoding = 'UTF-8'
-//}
-//
-//repositories {
-//
-//    mavenCentral()
-//}
 
 subprojects {
     
     buildscript {}
-    
-    group "com.bloxbean"
-    version "0.1.1-SNAPSHOT"
 
     apply plugin: "java"
     apply plugin: "maven"
@@ -66,151 +46,78 @@ subprojects {
         testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.2-groovy-2.4'
         testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
     }
-}
 
-/*
-dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    /*
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-    //rest
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
 
-    //graphql
-    compile group: 'com.graphql-java', name: 'graphql-java-tools', version:'5.2.4'
-    compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version:'5.0.2'
-    compile group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version:'5.0.2'
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
 
-    //Needed for Abi
-    compile group: 'org.json', name: 'json', version: '20180813'
+                pom.project {
 
-    compile group: 'org.apache.commons', name: 'commons-pool2', version:'2.2'
-    compile group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+                    //name 'bloxql'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'An Api Layer For Aion Blockchain'
+                    url 'https://github.com/bloxbean/bloxql'
 
-    compile "io.reactivex.rxjava2:rxjava:2.1.5"
+                    scm {
+                        connection 'scm:git:git@github.com:bloxbean/bloxql.git'
+                        developerConnection 'scm:git:git@github.com:bloxbean/bloxql.git'
+                        url 'https://github.com/bloxbean/bloxql'
+                    }
 
-    compile fileTree(include: ['*.jar'], dir: 'lib')
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'http://www.opensource.org/licenses/mit-license.php'
+                        }
+                    }
 
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.2-groovy-2.4'
-    testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.2-groovy-2.4'
-    testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
-}
-*/
-
-//mainClassName = 'com.bloxbean.bloxql.BloxQLApplication'
-/*
-mainClassName = 'com.bloxbean.bloxql.BloxQLApplication'
-
-applicationDefaultJvmArgs = ["-Dfile.encoding=utf8", "-Dlogging.config=config/logback.xml"]
-
-jar {
-    enabled = true
-}
-
-
-[bootJar, bootDistTar, bootDistZip]*.enabled = false
-
-distZip {
-    eachFile { it.duplicatesStrategy = 'exclude'};
-}
-
-distributions {
-    main {
-        baseName = 'aion-graphql-dist'
-
-        contents {
-
-            from('native') {
-                into('native')
-            }
-
-            from('LICENSE')
-
-            from('src/main/resources') {
-                into('config')
-                include 'application.yml'
-            }
-
-            from('config') {
-                into('config')
-                include 'logback.xml'
+                    developers {
+                        developer {
+                            id 'satran004'
+                            name 'Satya'
+                            email 'satran004@gmail.com'
+                        }
+                    }
+                }
             }
         }
-    }
-}*/
-
-/*
-release {
-    failOnUnversionedFiles = false
-    failOnUpdateNeeded = false
-
-    scmAdapters = [
-            net.researchgate.release.GitAdapter,
-    ]
-
-    git {
-        requireBranch = 'master'
-        pushToRemote = 'origin'
-        pushToBranchPrefix = ''
-        commitVersionFileOnly = false
-        signTag = false
-    }
-}
-*/
-/** Integration tests **/
-/*
-sourceSets {
-    integrationTest {
-        java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/integration-test/java')
-        }
-
-        groovy {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/integration-test/groovy')
-        }
-        resources.srcDir file('src/integration-test/resources')
-    }
+    }*/
 }
 
-configurations {
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
+//task javadocJar(type: Jar) {
+//    classifier = 'javadoc'
+//    from javadoc
+//}
+//
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
+//
+//artifacts {
+//    archives javadocJar, sourcesJar
+//}
+//
+//ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+//
+//println('8888888888')
+//println(isReleaseVersion )
+//println(version)
+//signing {
+//    required { ext.isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+//    sign configurations.archives
+//}
 
-}
-
-idea {
-    module {
-        testSourceDirs += sourceSets.integrationTest.java.srcDirs
-        testSourceDirs += sourceSets.integrationTest.groovy.srcDirs
-        testResourceDirs += sourceSets.integrationTest.resources.srcDirs
-        scopes.TEST.plus += [ configurations.integrationTestCompile ]
-
-        //added TODO
-//        inheritOutputDirs = false
-//        outputDir = file("$buildDir/classes/main/")
-    }
-}
-
-task integrationTest(type: Test) {
-    description = 'Runs the integration tests.'
-    group = 'verification'
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    outputs.upToDateWhen { false }
-    mustRunAfter test
-}
-
-check.dependsOn integrationTest*/
-/** Integration tests Ends here **/
 
 
