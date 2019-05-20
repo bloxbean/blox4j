@@ -16,15 +16,15 @@ buildscript {
 //}
 
 apply plugin: "maven"
-apply plugin: 'signing'
 apply plugin: 'groovy'
 
 subprojects {
     
     buildscript {}
-
+    
     apply plugin: "java"
     apply plugin: "maven"
+    apply plugin: 'signing'
     defaultTasks "clean", "build"
 
     repositories {
@@ -47,79 +47,79 @@ subprojects {
         testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
     }
 
-    
-}
-
-// Create a jar with javadoc
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
+    // Create a jar with javadoc
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
 
 // Create a jar with soruces
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
 
 // hook all the artifacts under artifacts task
-artifacts {
-    archives javadocJar, sourcesJar
-}
+    artifacts {
+        archives javadocJar, sourcesJar
+    }
 
-// Signing task
-signing {
-    sign configurations.archives
-}
+    // Signing task
+    signing {
+        sign configurations.archives
+    }
+    
+    uploadArchives {
 
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-uploadArchives {
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
 
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
+                pom.project {
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-
-                //name 'bloxql'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'An Api Layer For Aion Blockchain'
-                url 'https://github.com/bloxbean/bloxql'
-
-                scm {
-                    connection 'scm:git:git@github.com:bloxbean/bloxql.git'
-                    developerConnection 'scm:git:git@github.com:bloxbean/bloxql.git'
+                    //name 'bloxql'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'An Api Layer For Aion Blockchain'
                     url 'https://github.com/bloxbean/bloxql'
-                }
 
-                licenses {
-                    license {
-                        name 'MIT License'
-                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    scm {
+                        connection 'scm:git:git@github.com:bloxbean/bloxql.git'
+                        developerConnection 'scm:git:git@github.com:bloxbean/bloxql.git'
+                        url 'https://github.com/bloxbean/bloxql'
                     }
-                }
 
-                developers {
-                    developer {
-                        id 'satran004'
-                        name 'Satya'
-                        email 'satran004@gmail.com'
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'http://www.opensource.org/licenses/mit-license.php'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'satran004'
+                            name 'Satya'
+                            email 'satran004@gmail.com'
+                        }
                     }
                 }
             }
         }
     }
 }
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+
 
 //task sourcesJar(type: Jar) {
 //    classifier = 'sources'
