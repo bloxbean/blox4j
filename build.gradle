@@ -10,10 +10,10 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
-//
-//plugins {
-//    id 'net.researchgate.release' version '2.6.0'
-//}
+
+plugins {
+    id 'nu.studer.credentials' version '1.0.7'
+}
 
 apply plugin: "maven"
 apply plugin: 'groovy'
@@ -21,7 +21,7 @@ apply plugin: 'groovy'
 subprojects {
     
     buildscript {}
-    
+
     apply plugin: "java"
     apply plugin: "maven"
     apply plugin: 'signing'
@@ -68,19 +68,21 @@ subprojects {
     signing {
         sign configurations.archives
     }
-    
+
     uploadArchives {
 
         repositories {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
+                String ossPassword = credentials.ossrhPassword
+
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                    authentication(userName: ossrhUsername, password: ossPassword)
                 }
 
                 snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                    authentication(userName: ossrhUsername, password: ossPassword)
                 }
 
                 pom.project {
