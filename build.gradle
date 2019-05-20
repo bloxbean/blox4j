@@ -11,10 +11,6 @@ buildscript {
     }
 }
 
-plugins {
-    id 'net.researchgate.release' version '2.6.0'
-}
-
 apply plugin: "maven"
 apply plugin: 'signing'
 apply plugin: 'groovy'
@@ -22,6 +18,10 @@ apply plugin: 'groovy'
 subprojects {
     
     buildscript {}
+
+    plugins {
+        id 'net.researchgate.release' version '2.6.0'
+    }
 
     apply plugin: "java"
     apply plugin: "maven"
