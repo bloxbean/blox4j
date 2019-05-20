@@ -12,6 +12,7 @@ buildscript {
 }
 
 plugins {
+    id 'net.researchgate.release' version '2.6.0'
     id 'nu.studer.credentials' version '1.0.7'
 }
 
@@ -120,7 +121,6 @@ subprojects {
 }
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
 
 
 //task sourcesJar(type: Jar) {
