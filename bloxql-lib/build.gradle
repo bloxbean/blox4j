@@ -29,6 +29,28 @@ jar {
 
 [bootJar]*.enabled = false
 
+// Create a jar with javadoc
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+// Create a jar with soruces
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+// hook all the artifacts under artifacts task
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+// Signing task
+signing {
+    sign configurations.archives
+}
+
 uploadArchives {
 
     repositories {
@@ -47,7 +69,7 @@ uploadArchives {
 
             pom.project {
 
-                //name 'bloxql'
+                name 'bloxql-lib'
                 packaging 'jar'
                 // optionally artifactId can be defined here
                 description 'An Api Layer For Aion Blockchain'

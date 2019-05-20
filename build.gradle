@@ -49,28 +49,8 @@ subprojects {
         testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.7'
     }
 
-    // Create a jar with javadoc
-    task javadocJar(type: Jar) {
-        classifier = 'javadoc'
-        from javadoc
-    }
+   
 
-// Create a jar with soruces
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-// hook all the artifacts under artifacts task
-    artifacts {
-        archives javadocJar, sourcesJar
-    }
-
-    // Signing task
-    signing {
-        sign configurations.archives
-    }
-    
 }
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -78,5 +58,10 @@ ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 nexusStaging {
     //packageGroup = "org.mycompany.myproject" //optional if packageGroup == project.getGroup()
     //stagingProfileId = "yourStagingProfileId" //when not defined will be got from server using "packageGroup"
+    String ossPassword = credentials.ossrhPassword
+    username = ossrhUsername
+    password = ossPassword
 }
 
+//signing
+//pom name missing
