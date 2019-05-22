@@ -1,0 +1,102 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    compile project(":modules:blox4j-lib")
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    //graphql
+    compile group: 'com.graphql-java', name: 'graphql-java-tools', version:'5.2.4'
+    compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version:'5.0.2'
+    compile group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version:'5.0.2'
+
+    //Needed for Abi
+    compile group: 'org.json', name: 'json', version: '20180813'
+
+    compile group: 'org.apache.commons', name: 'commons-pool2', version:'2.2'
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version:'1.9.3'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
+    compile "io.reactivex.rxjava2:rxjava:2.1.5"
+
+    compile fileTree(include: ['*.jar'], dir: '../lib')
+
+}
+
+jar {
+    enabled = true
+}
+
+[bootJar]*.enabled = false
+
+// Create a jar with javadoc
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+// Create a jar with soruces
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+// hook all the artifacts under artifacts task
+artifacts {
+    archives javadocJar, sourcesJar
+}
+/**
+// Signing task
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            String ossPassword = credentials.ossrhPassword
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossPassword)
+            }
+
+            pom.project {
+
+                name 'blox4j-gql'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'An Api Layer For Aion Blockchain'
+                url 'https://github.com/bloxbean/bloxql'
+
+                scm {
+                    connection 'scm:git:git@github.com:bloxbean/blox4j.git'
+                    developerConnection 'scm:git:git@github.com:bloxbean/blox4j.git'
+                    url 'https://github.com/bloxbean/bloxql'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'satran004'
+                        name 'Satya'
+                        email 'satran004@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}**/
