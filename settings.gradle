@@ -1,6 +1,8 @@
 rootProject.name = 'blox4j'
-include ':blox4j-app'
+
 include 'modules:blox4j-lib'
 include 'modules:blox4j-gql'
 include 'modules:blox4j-rest'
+include 'modules:blox4j-aion'
+include ':blox4j-app'
 

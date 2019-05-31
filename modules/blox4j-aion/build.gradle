@@ -1,0 +1,21 @@
+apply from: "$projectDir/../module.gradle"
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+
+    compile project(":modules:blox4j-lib")
+    compile fileTree(include: ['*.jar'], dir: '../../lib')
+}
+
+
+jar {
+    enabled = true
+    from {configurations.compile.filter {it.getName().startsWith("libAionApi-")}
+            .collect {it.isDirectory() ? it : zipTree(it)}}
+
+}
+
+[bootJar]*.enabled = false
+

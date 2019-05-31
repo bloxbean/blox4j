@@ -4,4 +4,6 @@ apply plugin: 'io.spring.dependency-management'
 dependencies {
     compile project(":modules:blox4j-lib")
     compile project(":modules:blox4j-gql")
+    compile project(":modules:blox4j-rest")
+    compile project(":modules:blox4j-aion")
 }

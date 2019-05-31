@@ -1,3 +1,5 @@
+apply from: "$projectDir/../module.gradle"
+
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -20,7 +22,7 @@ dependencies {
 
     compile "io.reactivex.rxjava2:rxjava:2.1.5"
 
-    compile fileTree(include: ['*.jar'], dir: '../lib')
+//    compile fileTree(include: ['*.jar'], dir: '../lib')
 
 }
 
@@ -30,22 +32,22 @@ jar {
 
 [bootJar]*.enabled = false
 
-// Create a jar with javadoc
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-// Create a jar with soruces
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-// hook all the artifacts under artifacts task
-artifacts {
-    archives javadocJar, sourcesJar
-}
+//// Create a jar with javadoc
+//task javadocJar(type: Jar) {
+//    classifier = 'javadoc'
+//    from javadoc
+//}
+//
+//// Create a jar with soruces
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
+//
+//// hook all the artifacts under artifacts task
+//artifacts {
+//    archives javadocJar, sourcesJar
+//}
 /**
 // Signing task
 signing {
